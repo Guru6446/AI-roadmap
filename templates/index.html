@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Roadmap AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bk:#000;--s950:#070707;--s900:#101010;--s800:#1a1a1a;
+  --s700:#252525;--s600:#363636;--s500:#525252;--s400:#808080;
+  --s300:#a8a8a8;--s200:#d0d0d0;--s100:#ebebeb;--wh:#fff;
+  --sw:280px;--r:12px;--rs:7px;
+  --ease:cubic-bezier(.4,0,.2,1);--spring:cubic-bezier(.34,1.56,.64,1);--tr:.2s var(--ease);
+}
+html,body{height:100%;background:var(--bk);color:var(--wh);font-family:'Outfit',sans-serif;overflow:hidden;font-size:15px;-webkit-font-smoothing:antialiased;}
+#canvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
+
+/* INTRO */
+#intro{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:500;overflow:hidden;}
+.ig{position:absolute;inset:-80px;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:60px 60px;animation:igMove 12s linear infinite;pointer-events:none;}
+@keyframes igMove{0%{transform:translateY(0)}100%{transform:translateY(60px)}}
+.iglow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(255,255,255,.07) 0%,transparent 62%);animation:glowB 5s ease-in-out infinite;pointer-events:none;}
+@keyframes glowB{0%,100%{opacity:.5;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}}
+.scan{position:absolute;left:0;right:0;height:2px;top:0%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.7) 50%,transparent);animation:scanD 2.2s .2s ease-in-out forwards;pointer-events:none;}
+@keyframes scanD{0%{top:0%;opacity:0}4%{opacity:1}92%{opacity:.5}100%{top:100%;opacity:0}}
+.cr{position:absolute;border-color:rgba(255,255,255,.22);border-style:solid;opacity:0;}
+.cr1{top:20px;left:20px;width:0;height:0;border-width:0;animation:cr1E .5s 2s var(--spring) forwards;}
+.cr2{top:20px;right:20px;width:0;height:0;border-width:0;animation:cr2E .5s 2.1s var(--spring) forwards;}
+.cr3{bottom:20px;left:20px;width:0;height:0;border-width:0;animation:cr3E .5s 2.2s var(--spring) forwards;}
+.cr4{bottom:20px;right:20px;width:0;height:0;border-width:0;animation:cr4E .5s 2.3s var(--spring) forwards;}
+@keyframes cr1E{to{width:36px;height:36px;border-width:2px 0 0 2px;opacity:1}}
+@keyframes cr2E{to{width:36px;height:36px;border-width:2px 2px 0 0;opacity:1}}
+@keyframes cr3E{to{width:36px;height:36px;border-width:0 0 2px 2px;opacity:1}}
+@keyframes cr4E{to{width:36px;height:36px;border-width:0 2px 2px 0;opacity:1}}
+.ii{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center;padding:0 24px;}
+.rwrap{opacity:0;animation:fuA .4s .1s ease both;}
+.rline{stroke-dasharray:340;stroke-dashoffset:340;animation:drawL 1.4s .3s cubic-bezier(.25,.46,.45,.94) forwards;}
+@keyframes drawL{to{stroke-dashoffset:0}}
+.rdot{opacity:0;transform-origin:50% 50%;animation:dotB .32s ease forwards;}
+.rdot:nth-child(2){animation-delay:.9s}.rdot:nth-child(3){animation-delay:1.15s}.rdot:nth-child(4){animation-delay:1.4s}.rdot:nth-child(5){animation-delay:1.65s}
+@keyframes dotB{0%{opacity:0;transform:scale(0)}60%{opacity:1;transform:scale(1.6)}100%{opacity:1;transform:scale(1)}}
+.rpulse{animation:rpA 2s 2s ease-out infinite;transform-origin:50% 50%;opacity:0;}
+@keyframes rpA{0%{r:6;opacity:.8}100%{r:20;opacity:0}}
+.title-wrap{overflow:hidden;line-height:1;}
+.intro-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(58px,13vw,116px);letter-spacing:.07em;line-height:1;color:var(--wh);display:block;transform:translateY(110%);animation:slideUp .7s .85s cubic-bezier(.16,1,.3,1) forwards;text-shadow:0 0 120px rgba(255,255,255,.1);}
+.title-ai{font-family:'Bebas Neue',sans-serif;font-size:clamp(58px,13vw,116px);letter-spacing:.07em;line-height:1;color:var(--wh);display:block;transform:translateY(110%);animation:slideUp .7s 1.05s cubic-bezier(.16,1,.3,1) forwards;}
+@keyframes slideUp{to{transform:translateY(0)}}
+.intro-tag{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--s400);overflow:hidden;white-space:nowrap;width:0;opacity:0;border-right:1px solid var(--s500);animation:typeIn 1.2s 1.6s steps(40) forwards;}
+@keyframes typeIn{0%{width:0;opacity:1}99%{border-right:1px solid var(--s500)}100%{width:100%;opacity:1;border-right:none}}
+.vbadge{opacity:0;animation:fuA .4s 2.1s ease both;display:flex;align-items:center;gap:7px;padding:5px 13px;border:1px solid var(--s700);border-radius:20px;font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--s400);background:rgba(255,255,255,.03);}
+.vdot{width:6px;height:6px;border-radius:50%;background:var(--wh);animation:cdP 2s ease-in-out infinite;}
+@keyframes cdP{0%,100%{opacity:1;box-shadow:0 0 6px rgba(255,255,255,.5)}50%{opacity:.4;box-shadow:none}}
+.icta{opacity:0;animation:fuA .5s 2.4s ease both;display:flex;flex-direction:column;align-items:center;gap:11px;}
+.btn-enter{padding:13px 44px;background:var(--wh);color:var(--bk);border:none;border-radius:3px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;position:relative;overflow:hidden;transition:transform .22s var(--spring),box-shadow .22s ease;}
+.btn-enter:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 10px 36px rgba(255,255,255,.2);}
+.esub{font-size:10.5px;color:var(--s600);}
+#intro.exit{animation:introExit .65s var(--ease) forwards;pointer-events:none;}
+@keyframes introExit{0%{opacity:1;transform:scale(1)}30%{opacity:1;transform:scale(1.02)}100%{opacity:0;transform:scale(.96)}}
+@keyframes fuA{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes msgSlide{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* APP */
+.app{display:flex;height:100vh;overflow:hidden;opacity:0;transition:opacity .7s .08s ease;}
+.app.on{opacity:1;}
+
+/* SIDEBAR */
+.sidebar{width:var(--sw);background:var(--s950);border-right:1px solid var(--s700);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;transition:width var(--tr),transform var(--tr);z-index:100;}
+.sidebar.hide{width:0;}
+.sb-head{padding:16px 14px 12px;border-bottom:1px solid var(--s800);flex-shrink:0;}
+.brand{display:flex;align-items:center;gap:9px;white-space:nowrap;}
+.brand-ico{width:28px;height:28px;border:1.5px solid var(--wh);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;}
+.brand-name{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:.12em;color:var(--wh);}
+.status-bar{display:flex;align-items:center;gap:7px;padding:8px 14px;margin:6px 7px 0;border:1px solid var(--s800);border-radius:var(--rs);background:var(--s900);}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--s600);flex-shrink:0;transition:background .3s;}
+.status-dot.ok{background:#4caf50;box-shadow:0 0 6px rgba(76,175,80,.5);}
+.status-dot.err{background:#f44336;}
+.status-dot.checking{animation:cdP 1s infinite;}
+.status-text{font-size:11px;color:var(--s500);font-family:'DM Mono',monospace;}
+.feat-label{padding:10px 15px 4px;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--s600);white-space:nowrap;margin-top:8px;}
+.feat-nav{display:flex;flex-direction:column;gap:2px;padding:4px 7px;}
+.feat-btn{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--rs);border:1px solid transparent;background:transparent;color:var(--s400);cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;transition:all var(--tr);text-align:left;width:100%;white-space:nowrap;}
+.feat-btn:hover{background:var(--s800);color:var(--wh);}
+.feat-btn.active{background:var(--s800);border-color:var(--s600);color:var(--wh);}
+.feat-btn i{font-size:13px;flex-shrink:0;width:16px;text-align:center;}
+.feat-btn .badge{margin-left:auto;font-size:9px;padding:2px 6px;border-radius:10px;background:var(--wh);color:var(--bk);font-weight:700;letter-spacing:.04em;}
+.btn-new{display:flex;align-items:center;gap:9px;margin:10px 10px 6px;padding:10px 14px;background:var(--wh);color:var(--bk);border:none;border-radius:var(--rs);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;letter-spacing:.04em;cursor:pointer;white-space:nowrap;transition:background var(--tr),transform var(--tr);}
+.btn-new:hover{background:var(--s200);transform:translateY(-1px);}
+.sb-lbl{padding:10px 15px 4px;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--s600);white-space:nowrap;}
+.conv-list{flex:1;overflow-y:auto;padding:3px 7px 8px;scrollbar-width:thin;scrollbar-color:var(--s700) transparent;}
+.conv-list::-webkit-scrollbar{width:4px;}
+.conv-list::-webkit-scrollbar-thumb{background:var(--s700);border-radius:4px;}
+.ci{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:var(--rs);cursor:pointer;overflow:hidden;white-space:nowrap;border:1px solid transparent;transition:background var(--tr),border-color var(--tr);}
+.ci:hover{background:var(--s800);}
+.ci.on{background:var(--s800);border-color:var(--s600);}
+.ci i{font-size:11px;color:var(--s500);flex-shrink:0;}
+.ci.on i{color:var(--s300);}
+.ct{font-size:12.5px;color:var(--s300);overflow:hidden;text-overflow:ellipsis;}
+.ci.on .ct{color:var(--wh);}
+.sb-foot{padding:9px 7px;border-top:1px solid var(--s800);flex-shrink:0;}
+.sb-btn{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--rs);border:none;background:transparent;font-family:'Outfit',sans-serif;font-size:12.5px;color:var(--s500);cursor:pointer;width:100%;text-align:left;transition:background var(--tr),color var(--tr);white-space:nowrap;}
+.sb-btn:hover{background:var(--s800);color:var(--s200);}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;background:var(--s950);}
+.hdr{height:54px;border-bottom:1px solid var(--s800);display:flex;align-items:center;justify-content:space-between;padding:0 16px;flex-shrink:0;background:var(--s950);gap:10px;}
+.hl{display:flex;align-items:center;gap:9px;}
+.bico{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:none;background:transparent;color:var(--s500);cursor:pointer;border-radius:var(--rs);font-size:14px;flex-shrink:0;transition:background var(--tr),color var(--tr),transform .15s var(--spring);}
+.bico:hover{background:var(--s800);color:var(--wh);transform:scale(1.1);}
+.chip{display:flex;align-items:center;gap:7px;padding:5px 13px;border:1px solid var(--s700);border-radius:20px;font-size:12.5px;font-weight:500;color:var(--s300);white-space:nowrap;background:var(--s900);}
+.cdot{width:7px;height:7px;border-radius:50%;background:var(--wh);animation:cdP 2.2s ease-in-out infinite;}
+.hr2{display:flex;align-items:center;gap:5px;}
+.ava{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--s600);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--wh);cursor:pointer;flex-shrink:0;background:var(--s800);}
+
+/* PANELS */
+.panel{display:none;flex:1;overflow:hidden;flex-direction:column;}
+.panel.active{display:flex;}
+
+/* CHAT */
+.cwin{flex:1;overflow-y:auto;padding:20px 0 8px;scrollbar-width:thin;scrollbar-color:var(--s700) transparent;}
+.cwin::-webkit-scrollbar{width:4px;}
+.cwin::-webkit-scrollbar-thumb{background:var(--s700);border-radius:4px;}
+.wel{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:32px 20px;gap:18px;text-align:center;}
+.wbadge{display:flex;align-items:center;gap:7px;padding:5px 13px;border:1px solid var(--s700);border-radius:20px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;color:var(--s400);background:var(--s900);text-transform:uppercase;}
+.wdot{width:6px;height:6px;border-radius:50%;background:var(--wh);animation:cdP 2s infinite;}
+.wel h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(30px,5vw,50px);letter-spacing:.06em;color:var(--wh);line-height:1.06;}
+.wel h2 em{color:var(--s500);font-style:normal;}
+.wel p{font-size:13.5px;color:var(--s400);max-width:440px;line-height:1.78;}
+.sugs{display:grid;grid-template-columns:1fr 1fr;gap:9px;width:100%;max-width:580px;margin-top:6px;}
+.sg{padding:13px 15px;border:1px solid var(--s700);border-radius:var(--r);background:var(--s900);cursor:pointer;text-align:left;transition:border-color var(--tr),background var(--tr),transform .18s var(--spring);}
+.sg:hover{border-color:var(--s400);background:var(--s800);transform:translateY(-3px);}
+.sg strong{display:block;font-size:13.5px;font-weight:600;color:var(--wh);margin-bottom:3px;}
+.sg span{font-size:12px;color:var(--s500);}
+.msgs{display:flex;flex-direction:column;}
+.mrow{display:flex;padding:9px 18px;gap:12px;animation:msgSlide .24s var(--ease) both;}
+.mrow.user{flex-direction:row-reverse;}
+.mav{width:30px;height:30px;border-radius:50%;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;}
+.mrow.user .mav{background:var(--wh);color:var(--bk);}
+.mrow.ai .mav{background:var(--s800);border:1px solid var(--s600);color:var(--wh);font-size:10px;}
+.mbody{max-width:73%;display:flex;flex-direction:column;gap:4px;}
+.mrow.user .mbody{align-items:flex-end;}
+.mname{font-size:10.5px;font-weight:600;letter-spacing:.07em;color:var(--s500);font-family:'DM Mono',monospace;text-transform:uppercase;}
+.bub{padding:11px 15px;border-radius:16px;font-size:14.5px;line-height:1.72;word-break:break-word;}
+.mrow.user .bub{background:var(--wh);color:var(--bk);border-bottom-right-radius:4px;}
+.mrow.ai .bub{background:var(--s900);color:var(--s100);border:1px solid var(--s700);border-bottom-left-radius:4px;}
+.bub p{margin-bottom:6px;}.bub p:last-child{margin-bottom:0;}
+.bub strong{color:var(--wh);font-weight:600;}.mrow.user .bub strong{color:var(--bk);}
+.bub ul,.bub ol{padding-left:18px;margin:6px 0;}.bub li{margin:3px 0;color:var(--s200);}
+.bub h3{font-size:15px;font-weight:700;color:var(--wh);margin:10px 0 4px;}
+.bub pre{background:var(--s800);border:1px solid var(--s700);border-radius:var(--rs);padding:11px 13px;margin:9px 0;overflow-x:auto;font-size:12.5px;font-family:'DM Mono',monospace;}
+.bub code{font-family:'DM Mono',monospace;font-size:12.5px;color:var(--s300);}
+.bub.err{border-color:#f4433640;background:#f4433610;color:#ff8a80;}
+.mmeta{display:flex;align-items:center;gap:5px;}
+.mtime{font-size:10px;color:var(--s600);font-family:'DM Mono',monospace;}
+.macts{display:flex;gap:2px;opacity:0;transition:opacity var(--tr);}
+.mrow:hover .macts{opacity:1;}
+.act{width:24px;height:24px;border:none;background:transparent;color:var(--s600);cursor:pointer;border-radius:5px;font-size:10px;display:flex;align-items:center;justify-content:center;transition:background var(--tr),color var(--tr);}
+.act:hover{background:var(--s700);color:var(--wh);}
+.trow{display:flex;padding:9px 18px;gap:12px;animation:msgSlide .2s ease both;}
+.tbub{display:flex;align-items:center;gap:5px;padding:13px 16px;background:var(--s900);border:1px solid var(--s700);border-radius:16px;border-bottom-left-radius:4px;}
+.td{width:6px;height:6px;border-radius:50%;background:var(--s500);animation:tdP 1.3s ease-in-out infinite;}
+.td:nth-child(2){animation-delay:.18s}.td:nth-child(3){animation-delay:.36s}
+@keyframes tdP{0%,60%,100%{transform:scale(.75);opacity:.4}30%{transform:scale(1.35);opacity:1;background:var(--wh)}}
+.iarea{border-top:1px solid var(--s800);background:var(--s950);padding:12px 16px 14px;flex-shrink:0;}
+.iwrap{display:flex;align-items:flex-end;gap:9px;background:var(--s900);border:1.5px solid var(--s700);border-radius:var(--r);padding:10px 10px 10px 15px;max-width:860px;margin:0 auto;transition:border-color var(--tr),box-shadow var(--tr);}
+.iwrap:focus-within{border-color:var(--s400);box-shadow:0 0 0 3px rgba(255,255,255,.04);}
+#mi{flex:1;border:none;background:transparent;font-family:'Outfit',sans-serif;font-size:14.5px;color:var(--wh);resize:none;outline:none;max-height:160px;min-height:24px;line-height:1.55;scrollbar-width:thin;}
+#mi::placeholder{color:var(--s600);}
+.ia{display:flex;align-items:center;gap:3px;}
+.bsend{width:36px;height:36px;border-radius:var(--rs);border:none;background:var(--wh);color:var(--bk);font-size:13px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(255,255,255,.1);transition:background var(--tr),transform .15s var(--spring);}
+.bsend:hover{background:var(--s200);transform:scale(1.1);}
+.bsend:disabled{opacity:.3;cursor:not-allowed;transform:none!important;}
+.ihint{text-align:center;font-size:10.5px;color:var(--s600);margin-top:8px;max-width:860px;margin-left:auto;margin-right:auto;font-family:'DM Mono',monospace;}
+
+/* FEATURE PANELS */
+.fpanel{flex:1;overflow-y:auto;padding:28px 28px 28px;scrollbar-width:thin;scrollbar-color:var(--s700) transparent;}
+.fpanel::-webkit-scrollbar{width:4px;}
+.fpanel::-webkit-scrollbar-thumb{background:var(--s700);border-radius:4px;}
+.fpanel-title{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:.06em;color:var(--wh);margin-bottom:6px;}
+.fpanel-sub{font-size:13.5px;color:var(--s400);margin-bottom:24px;line-height:1.65;max-width:680px;}
+.fcard{background:var(--s900);border:1px solid var(--s700);border-radius:var(--r);padding:22px 24px;margin-bottom:18px;}
+.fcard-title{font-size:14px;font-weight:600;color:var(--wh);margin-bottom:16px;display:flex;align-items:center;gap:9px;}
+.fcard-title i{color:var(--s400);font-size:13px;}
+.flabel{display:block;font-size:11.5px;font-weight:600;color:var(--s400);letter-spacing:.06em;text-transform:uppercase;margin-bottom:7px;margin-top:16px;}
+.flabel:first-of-type{margin-top:0;}
+.finput{width:100%;padding:11px 14px;background:var(--s800);border:1px solid var(--s700);border-radius:var(--rs);color:var(--wh);font-family:'Outfit',sans-serif;font-size:14px;outline:none;transition:border-color var(--tr),box-shadow var(--tr);}
+.finput:focus{border-color:var(--s400);box-shadow:0 0 0 3px rgba(255,255,255,.04);}
+.finput::placeholder{color:var(--s600);}
+select.finput{cursor:pointer;}
+select.finput option{background:var(--s800);}
+textarea.finput{resize:vertical;min-height:90px;}
+.upload-zone{border:2px dashed var(--s600);border-radius:var(--r);padding:32px 20px;text-align:center;cursor:pointer;transition:border-color var(--tr),background var(--tr);position:relative;}
+.upload-zone:hover{border-color:var(--s300);background:rgba(255,255,255,.02);}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.upload-icon{font-size:32px;color:var(--s500);margin-bottom:10px;}
+.upload-text{font-size:14px;color:var(--s300);margin-bottom:4px;font-weight:500;}
+.upload-hint{font-size:12px;color:var(--s600);}
+.upload-name{font-size:13px;color:var(--wh);font-weight:600;margin-top:12px;display:none;padding:8px 14px;background:var(--s800);border-radius:var(--rs);display:none;}
+.range-wrap{display:flex;align-items:center;gap:14px;}
+.franges{flex:1;-webkit-appearance:none;height:4px;border-radius:2px;background:var(--s600);outline:none;cursor:pointer;}
+.franges::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--wh);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.4);}
+.range-val{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--wh);min-width:65px;text-align:right;line-height:1;}
+.fsubmit{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:13px 20px;background:var(--wh);color:var(--bk);border:none;border-radius:var(--rs);font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;letter-spacing:.05em;cursor:pointer;margin-top:6px;transition:background var(--tr),transform .15s var(--spring),box-shadow var(--tr);}
+.fsubmit:hover{background:var(--s200);transform:translateY(-2px);box-shadow:0 6px 22px rgba(255,255,255,.12);}
+.fsubmit:disabled{opacity:.4;cursor:not-allowed;transform:none!important;}
+.spinner{display:none;width:18px;height:18px;border:2px solid rgba(0,0,0,.2);border-top-color:var(--bk);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
+.loading .spinner{display:block;}
+.loading .btn-text{display:none;}
+.result-box{background:var(--s800);border:1px solid var(--s700);border-radius:var(--r);padding:22px 24px;margin-top:22px;display:none;}
+.result-box.show{display:block;animation:scaleIn .3s var(--spring);}
+.result-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--s700);}
+.result-icon{width:38px;height:38px;border-radius:50%;background:var(--s700);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.result-title{font-size:14.5px;font-weight:600;color:var(--wh);}
+.result-sub{font-size:12px;color:var(--s500);margin-top:3px;}
+.result-content{font-size:13.5px;line-height:1.78;color:var(--s100);}
+.result-content p{margin-bottom:6px;}.result-content p:last-child{margin-bottom:0;}
+.result-content strong{color:var(--wh);font-weight:600;}
+.result-content h3{font-size:14.5px;font-weight:700;color:var(--wh);margin:12px 0 5px;}
+.result-content ul,.result-content ol{padding-left:20px;margin:6px 0;}
+.result-content li{margin:4px 0;color:var(--s200);}
+.score-wrap{margin-bottom:18px;}
+.score-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.score-label span:first-child{font-size:13px;color:var(--s300);}
+.score-label span:last-child{font-size:16px;font-weight:700;color:var(--wh);}
+.score-track{height:10px;background:var(--s700);border-radius:6px;overflow:hidden;}
+.score-fill{height:100%;border-radius:6px;background:var(--wh);width:0%;transition:width 1.4s cubic-bezier(.4,0,.2,1);}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px;}
+.stat-card{background:var(--s900);border:1px solid var(--s700);border-radius:var(--rs);padding:14px 16px;text-align:center;}
+.stat-val{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--wh);line-height:1;}
+.stat-label{font-size:10.5px;color:var(--s500);margin-top:4px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.04em;}
+.tip-text{font-size:11.5px;color:var(--s500);margin-top:8px;line-height:1.6;}
+
+/* MOBILE */
+.ovl{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:99;}
+@media(max-width:768px){
+  .sidebar{position:fixed;top:0;left:0;bottom:0;transform:translateX(-101%);width:var(--sw)!important;transition:transform .28s var(--ease);}
+  .sidebar.mo{transform:translateX(0);box-shadow:5px 0 40px rgba(0,0,0,.9);}
+  .ovl{display:block;}
+  .sugs{grid-template-columns:1fr;}
+  .mbody{max-width:88%;}
+  .mrow{padding:8px 10px;}
+  .iarea{padding:10px 10px 13px;}
+  .fpanel{padding:18px 14px 18px;}
+  .stat-row{grid-template-columns:1fr 1fr;}
+}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--wh);color:var(--bk);padding:8px 18px;border-radius:20px;font-size:12.5px;font-weight:600;opacity:0;pointer-events:none;z-index:999;transition:opacity .2s,transform .2s;white-space:nowrap;}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+
+<!-- INTRO -->
+<div id="intro">
+  <div class="ig"></div><div class="iglow"></div><div class="scan"></div>
+  <div class="cr cr1"></div><div class="cr cr2"></div><div class="cr cr3"></div><div class="cr cr4"></div>
+  <div class="ii">
+    <div class="rwrap">
+      <svg width="140" height="86" viewBox="0 0 140 86" fill="none">
+        <path class="rline" d="M10 78 C24 78 30 60 44 54 C58 48 62 38 74 32 C86 26 96 20 108 12 C116 7 124 5 130 4" stroke="white" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <circle class="rdot" cx="10" cy="78" r="5" fill="white"/>
+        <circle class="rdot" cx="44" cy="54" r="5" fill="white"/>
+        <circle class="rdot" cx="74" cy="32" r="5" fill="white"/>
+        <circle class="rdot" cx="108" cy="12" r="5" fill="white"/>
+        <circle class="rdot" cx="130" cy="4" r="7" fill="white"/>
+        <circle class="rpulse" cx="130" cy="4" r="7" stroke="white" stroke-width="1.5" fill="none"/>
+      </svg>
+    </div>
+    <div>
+      <div class="title-wrap"><span class="intro-title">ROADMAP</span></div>
+      <div class="title-wrap"><span class="title-ai">AI</span></div>
+    </div>
+    <div class="intro-tag">Your path. Defined by intelligence.</div>
+    <div class="vbadge"><div class="vdot"></div>Powered by Ollama &nbsp;&middot;&nbsp; Local AI</div>
+    <div class="icta">
+      <button class="btn-enter" id="enterBtn"><i class="fa-solid fa-arrow-right" style="margin-right:8px"></i>GET STARTED</button>
+      <div class="esub">Press Enter or click to begin</div>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app" id="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sb">
+    <div class="sb-head">
+      <div class="brand">
+        <div class="brand-ico"><i class="fa-solid fa-route"></i></div>
+        <div class="brand-name">ROADMAP AI</div>
+      </div>
+    </div>
+    <div class="status-bar" id="statusBar">
+      <div class="status-dot checking" id="statusDot"></div>
+      <span class="status-text" id="statusText">Checking Ollama...</span>
+    </div>
+    <div class="feat-label">Features</div>
+    <div class="feat-nav">
+      <button class="feat-btn active" onclick="switchPanel('chat')" id="nav-chat">
+        <i class="fa-solid fa-comments"></i> AI Chat
+      </button>
+      <button class="feat-btn" onclick="switchPanel('resume')" id="nav-resume">
+        <i class="fa-solid fa-file-lines"></i> Resume Analyzer
+        <span class="badge">NEW</span>
+      </button>
+      <button class="feat-btn" onclick="switchPanel('skillgap')" id="nav-skillgap">
+        <i class="fa-solid fa-chart-bar"></i> Skill Gap Checker
+        <span class="badge">NEW</span>
+      </button>
+      <button class="feat-btn" onclick="switchPanel('timeest')" id="nav-timeest">
+        <i class="fa-solid fa-clock"></i> Time Estimator
+        <span class="badge">NEW</span>
+      </button>
+    </div>
+    <button class="btn-new" id="btnNew"><i class="fa-solid fa-plus"></i> New Chat</button>
+    <div class="sb-lbl">Recent Chats</div>
+    <div class="conv-list" id="clist"></div>
+    <div class="sb-foot">
+      <button class="sb-btn" onclick="checkHealth()"><i class="fa-solid fa-rotate"></i> Check Ollama</button>
+      <button class="sb-btn" onclick="showToast('Model: llama3.2')"><i class="fa-solid fa-microchip"></i> Model: llama3.2</button>
+    </div>
+  </aside>
+
+  <div class="ovl" id="ovl"></div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <header class="hdr">
+      <div class="hl">
+        <button class="bico" id="sbBtn"><i class="fa-solid fa-bars"></i></button>
+        <div class="chip"><div class="cdot"></div><span id="panelLabel">AI Career Chat</span></div>
+      </div>
+      <div class="hr2">
+        <button class="bico" onclick="clearChat()" title="Clear chat"><i class="fa-solid fa-trash-can"></i></button>
+        <button class="bico" onclick="copyLast()" title="Copy last response"><i class="fa-regular fa-copy"></i></button>
+        <div class="ava">U</div>
+      </div>
+    </header>
+
+    <!-- PANEL 1: CHAT -->
+    <div class="panel active" id="panel-chat">
+      <div class="cwin" id="cwin">
+        <div class="wel" id="welScr">
+          <div class="wbadge"><div class="wdot"></div>Roadmap Intelligence Active</div>
+          <h2>Where do you want<br/><em>to go?</em></h2>
+          <p>Ask about careers, skills, salaries — or use the new tools in the sidebar for Resume Analysis, Skill Gap Check, and Time Estimation.</p>
+          <div class="sugs">
+            <div class="sg" onclick="useSug('Give me a complete web development roadmap for a beginner in 2025')"><strong>&#9000; Web Dev Roadmap</strong><span>Step-by-step learning path</span></div>
+            <div class="sg" onclick="useSug('What skills do I need to become a Data Scientist and what is the salary?')"><strong>&#128202; Data Science Career</strong><span>Skills, tools and salary</span></div>
+            <div class="sg" onclick="useSug('How long will it take to learn Python and get a software developer job?')"><strong>&#9201; Time to Get a Job</strong><span>Realistic timeline estimate</span></div>
+            <div class="sg" onclick="useSug('What are the highest paying tech careers in India in 2025?')"><strong>&#128176; Top Paying Careers</strong><span>Salary insights for India</span></div>
+          </div>
+        </div>
+        <div class="msgs" id="msgs" style="display:none"></div>
+      </div>
+      <div class="iarea">
+        <div class="iwrap">
+          <textarea id="mi" placeholder="Ask about any career roadmap..." rows="1"></textarea>
+          <div class="ia">
+            <button class="bsend" id="bsend"><i class="fa-solid fa-arrow-up"></i></button>
+          </div>
+        </div>
+        <div class="ihint">Powered by Ollama locally &nbsp;&middot;&nbsp; Shift+Enter for new line</div>
+      </div>
+    </div>
+
+    <!-- PANEL 2: RESUME ANALYZER -->
+    <div class="panel" id="panel-resume">
+      <div class="fpanel">
+        <div class="fpanel-title">&#128196; Resume Analyzer</div>
+        <div class="fpanel-sub">Upload your resume PDF. The AI reads it and tells you exactly how ready you are for your target career, what skills you already have, what is missing, and a plan to improve.</div>
+
+        <div class="fcard">
+          <div class="fcard-title"><i class="fa-solid fa-bullseye"></i> Target Career</div>
+          <label class="flabel">I want to become a...</label>
+          <select class="finput" id="resumeCareer">
+            <option>Software Developer</option>
+            <option>Data Scientist</option>
+            <option>Cyber Security</option>
+            <option>Web Developer</option>
+            <option>AI/ML Engineer</option>
+          </select>
+        </div>
+
+        <div class="fcard">
+          <div class="fcard-title"><i class="fa-solid fa-upload"></i> Upload Resume PDF</div>
+          <div class="upload-zone" id="uploadZone">
+            <input type="file" id="resumeFile" accept=".pdf" onchange="handleFile(this)"/>
+            <div class="upload-icon">&#128206;</div>
+            <div class="upload-text">Click to upload your resume PDF</div>
+            <div class="upload-hint">PDF only &middot; Max 10MB &middot; Text-based PDF (not scanned)</div>
+          </div>
+          <div class="upload-name" id="uploadName"></div>
+        </div>
+
+        <button class="fsubmit" id="resumeBtn" onclick="analyzeResume()">
+          <div class="spinner"></div>
+          <span class="btn-text"><i class="fa-solid fa-magnifying-glass"></i> &nbsp;Analyze My Resume</span>
+        </button>
+
+        <div class="result-box" id="resumeResult">
+          <div class="result-header">
+            <div class="result-icon">&#127919;</div>
+            <div>
+              <div class="result-title">Resume Analysis Complete</div>
+              <div class="result-sub" id="resumeResultSub">Analysis result</div>
+            </div>
+          </div>
+          <div class="score-wrap" id="scoreWrap" style="display:none">
+            <div class="score-label"><span>Readiness Score</span><span id="scoreVal">0%</span></div>
+            <div class="score-track"><div class="score-fill" id="scoreFill"></div></div>
+          </div>
+          <div class="result-content" id="resumeResultContent"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 3: SKILL GAP -->
+    <div class="panel" id="panel-skillgap">
+      <div class="fpanel">
+        <div class="fpanel-title">&#128202; Skill Gap Checker</div>
+        <div class="fpanel-sub">Select your career goal and list your current skills. The AI will show exactly what skills you are missing, how long each will take to learn, and give you a personalized learning roadmap.</div>
+
+        <div class="fcard">
+          <div class="fcard-title"><i class="fa-solid fa-crosshairs"></i> Your Goal and Current Skills</div>
+          <label class="flabel">My career goal</label>
+          <select class="finput" id="sgCareer">
+            <option>Software Developer</option>
+            <option>Data Scientist</option>
+            <option>Cyber Security</option>
+            <option>Web Developer</option>
+            <option>AI/ML Engineer</option>
+          </select>
+          <label class="flabel">Skills I currently have</label>
+          <textarea class="finput" id="sgSkills" rows="5" placeholder="Example: Python basics, Excel, basic HTML, some SQL, MS Office, Canva...
+
+List everything — even basic skills count!"></textarea>
+          <p class="tip-text">&#128161; Tip: Be honest and list even beginner-level skills. The AI will assess your exact readiness level.</p>
+        </div>
+
+        <button class="fsubmit" id="sgBtn" onclick="checkSkillGap()">
+          <div class="spinner"></div>
+          <span class="btn-text"><i class="fa-solid fa-chart-bar"></i> &nbsp;Check My Skill Gap</span>
+        </button>
+
+        <div class="result-box" id="sgResult">
+          <div class="result-header">
+            <div class="result-icon">&#128202;</div>
+            <div>
+              <div class="result-title">Skill Gap Analysis</div>
+              <div class="result-sub" id="sgResultSub">Personalized gap report</div>
+            </div>
+          </div>
+          <div class="score-wrap" id="sgScoreWrap" style="display:none">
+            <div class="score-label"><span>Current Readiness</span><span id="sgScoreVal">0%</span></div>
+            <div class="score-track"><div class="score-fill" id="sgScoreFill"></div></div>
+          </div>
+          <div class="result-content" id="sgResultContent"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 4: TIME ESTIMATOR -->
+    <div class="panel" id="panel-timeest">
+      <div class="fpanel">
+        <div class="fpanel-title">&#9201; Learning Time Estimator</div>
+        <div class="fpanel-sub">Tell the AI how many hours you can study each day and your career goal. It will calculate a complete month-by-month plan showing when you will be job-ready.</div>
+
+        <div class="fcard">
+          <div class="fcard-title"><i class="fa-solid fa-calendar-days"></i> Your Study Plan Details</div>
+          <label class="flabel">Career goal</label>
+          <select class="finput" id="teCareer" onchange="updateEstimate()">
+            <option>Software Developer</option>
+            <option>Data Scientist</option>
+            <option>Cyber Security</option>
+            <option>Web Developer</option>
+            <option>AI/ML Engineer</option>
+          </select>
+          <label class="flabel">Study hours per day: <strong id="teHoursDisplay">2 hours</strong></label>
+          <div class="range-wrap">
+            <input type="range" class="franges" id="teHours" min="0.5" max="12" step="0.5" value="2" oninput="updateHours(this.value)"/>
+            <div class="range-val"><span id="teHoursVal">2</span><span style="font-size:14px;color:var(--s400)">h</span></div>
+          </div>
+          <label class="flabel">Current skills (optional)</label>
+          <input type="text" class="finput" id="teSkills" placeholder="e.g. Python basics, HTML, some JavaScript..."/>
+        </div>
+
+        <div class="fcard">
+          <div class="fcard-title"><i class="fa-solid fa-bolt"></i> Quick Estimate</div>
+          <div class="stat-row">
+            <div class="stat-card"><div class="stat-val" id="estMonths">—</div><div class="stat-label">Months</div></div>
+            <div class="stat-card"><div class="stat-val" id="estHrsWk">—</div><div class="stat-label">Hrs / Week</div></div>
+            <div class="stat-card"><div class="stat-val" id="estSalary">—</div><div class="stat-label">Avg Salary</div></div>
+          </div>
+          <p class="tip-text">&#42; Rough estimate only. Click below for a detailed AI-generated month-by-month plan.</p>
+        </div>
+
+        <button class="fsubmit" id="teBtn" onclick="estimateTime()">
+          <div class="spinner"></div>
+          <span class="btn-text"><i class="fa-solid fa-wand-magic-sparkles"></i> &nbsp;Get My Full Learning Plan</span>
+        </button>
+
+        <div class="result-box" id="teResult">
+          <div class="result-header">
+            <div class="result-icon">&#128197;</div>
+            <div>
+              <div class="result-title">Your Personalized Learning Plan</div>
+              <div class="result-sub" id="teResultSub">Month-by-month roadmap</div>
+            </div>
+          </div>
+          <div class="result-content" id="teResultContent"></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<div class="toast" id="toastEl"></div>
+
+<script>
+'use strict';
+
+// DOM
+const introEl=document.getElementById('intro'),enterBtn=document.getElementById('enterBtn'),appEl=document.getElementById('app');
+const sbEl=document.getElementById('sb'),ovlEl=document.getElementById('ovl'),sbBtn=document.getElementById('sbBtn');
+const btnNew=document.getElementById('btnNew'),clistEl=document.getElementById('clist');
+const cwinEl=document.getElementById('cwin'),welScrEl=document.getElementById('welScr'),msgsEl=document.getElementById('msgs');
+const miEl=document.getElementById('mi'),bsendEl=document.getElementById('bsend'),toastDiv=document.getElementById('toastEl');
+const statusDot=document.getElementById('statusDot'),statusText=document.getElementById('statusText');
+
+// Career hours data for quick estimate
+const CHOURS={
+  'Software Developer':{h:800,s:'4-12L'},
+  'Data Scientist':{h:1000,s:'6-15L'},
+  'Cyber Security':{h:900,s:'5-14L'},
+  'Web Developer':{h:700,s:'4-10L'},
+  'AI/ML Engineer':{h:1200,s:'8-25L'}
+};
+
+const S={convs:[],activeId:null,busy:false,sbHidden:false};
+
+// Particles
+(function(){
+  const cv=document.getElementById('canvas'),ctx=cv.getContext('2d');
+  let W,H,P=[];
+  function resize(){W=cv.width=innerWidth;H=cv.height=innerHeight;}
+  resize();window.addEventListener('resize',resize);
+  function mkP(){return{x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.3,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,a:Math.random()*.5+.1};}
+  for(let i=0;i<90;i++)P.push(mkP());
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    P.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,'+p.a+')';ctx.fill();});
+    for(let i=0;i<P.length;i++){for(let j=i+1;j<P.length;j++){const dx=P[i].x-P[j].x,dy=P[i].y-P[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<110){ctx.beginPath();ctx.moveTo(P[i].x,P[i].y);ctx.lineTo(P[j].x,P[j].y);ctx.strokeStyle='rgba(255,255,255,'+(0.07*(1-d/110))+')';ctx.lineWidth=.5;ctx.stroke();}}}
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// Intro
+function launch(){
+  if(appEl.classList.contains('on'))return;
+  introEl.classList.add('exit');
+  setTimeout(()=>{introEl.style.display='none';document.getElementById('canvas').style.display='none';appEl.classList.add('on');miEl.focus();checkHealth();updateEstimate();},620);
+}
+enterBtn.addEventListener('click',launch);
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&!appEl.classList.contains('on')){e.preventDefault();launch();}});
+
+// Panel switching
+function switchPanel(name){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  document.querySelectorAll('.feat-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('nav-'+name).classList.add('active');
+  const labels={chat:'AI Career Chat',resume:'Resume Analyzer',skillgap:'Skill Gap Checker',timeest:'Time Estimator'};
+  document.getElementById('panelLabel').textContent=labels[name]||'Roadmap AI';
+  if(window.innerWidth<=768)closeMobile();
+}
+
+// Health
+async function checkHealth(){
+  statusDot.className='status-dot checking';statusText.textContent='Checking Ollama...';
+  try{const r=await fetch('/health');const d=await r.json();if(d.ollama==='reachable'){statusDot.className='status-dot ok';statusText.textContent='Ollama connected';}else throw 0;}
+  catch{statusDot.className='status-dot err';statusText.textContent='Ollama offline';}
+}
+
+// Utilities
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const nowStr=()=>new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+
+function renderMD(text){
+  if(!text)return'';
+  text=text.replace(/```[\w]*\n?([\s\S]*?)```/g,(_,c)=>'<pre><code>'+esc(c.trim())+'</code></pre>');
+  text=text.replace(/`([^`\n]+)`/g,'<code>$1</code>');
+  text=text.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  text=text.replace(/\*(.+?)\*/g,'<em>$1</em>');
+  text=text.replace(/^#{1,3} (.+)$/gm,'<h3>$1</h3>');
+  const lines=text.split('\n');let html='',inUl=false,inOl=false;
+  for(const raw of lines){
+    const ln=raw.trim();
+    const nm=ln.match(/^(\d+)[.)]\s+(.+)$/);
+    if(nm){if(inUl){html+='</ul>';inUl=false;}if(!inOl){html+='<ol>';inOl=true;}html+='<li>'+nm[2]+'</li>';continue;}
+    if(/^[-*] /.test(ln)){if(inOl){html+='</ol>';inOl=false;}if(!inUl){html+='<ul>';inUl=true;}html+='<li>'+ln.slice(2)+'</li>';continue;}
+    if(inOl){html+='</ol>';inOl=false;}if(inUl){html+='</ul>';inUl=false;}
+    if(ln)html+='<p>'+ln+'</p>';
+  }
+  if(inOl)html+='</ol>';if(inUl)html+='</ul>';
+  return html;
+}
+
+function extractScore(text){const m=text.match(/(\d{1,3})\s*%/);return m?Math.min(100,parseInt(m[1])):null;}
+function showScore(trackId,fillId,valId,wrapId,text){
+  const score=extractScore(text);
+  const wrap=document.getElementById(wrapId);
+  if(score!==null){
+    wrap.style.display='block';
+    document.getElementById(valId).textContent=score+'%';
+    setTimeout(()=>{document.getElementById(fillId).style.width=score+'%';},100);
+  }else{wrap.style.display='none';}
+}
+
+function showToast(m){toastDiv.textContent=m;toastDiv.classList.add('on');clearTimeout(toastDiv._t);toastDiv._t=setTimeout(()=>toastDiv.classList.remove('on'),2500);}
+function scrollBot(){requestAnimationFrame(()=>cwinEl.scrollTo({top:cwinEl.scrollHeight,behavior:'smooth'}));}
+function autoH(){miEl.style.height='auto';miEl.style.height=Math.min(miEl.scrollHeight,160)+'px';}
+
+// Chat
+function newConv(t){const id='c'+Date.now(),title=t.length>44?t.slice(0,44)+'...':t,c={id,title,msgs:[]};S.convs.unshift(c);S.activeId=id;renderList();return c;}
+function getActive(){return S.convs.find(c=>c.id===S.activeId)||null;}
+function renderList(){clistEl.innerHTML='';S.convs.forEach(conv=>{const el=document.createElement('div');el.className='ci'+(conv.id===S.activeId?' on':'');el.innerHTML='<i class="fa-regular fa-message"></i><span class="ct">'+esc(conv.title)+'</span>';el.addEventListener('click',()=>loadConv(conv.id));clistEl.appendChild(el);});}
+function loadConv(id){S.activeId=id;renderList();msgsEl.innerHTML='';welScrEl.style.display='none';msgsEl.style.display='';const conv=getActive();if(conv)conv.msgs.forEach(m=>addBubble(m.role,m.html,m.time,false));scrollBot();if(window.innerWidth<=768)closeMobile();}
+
+function addBubble(role,html,time,animate){
+  if(animate===undefined)animate=true;
+  const isUser=role==='user',row=document.createElement('div');
+  row.className='mrow '+(isUser?'user':'ai');if(!animate)row.style.animation='none';
+  const isErr=html.includes('Cannot connect')||html.includes('timed out')||html.includes('Something went wrong');
+  row.innerHTML='<div class="mav">'+(isUser?'<span>U</span>':'<i class="fa-solid fa-route" style="font-size:10px"></i>')+'</div><div class="mbody"><div class="mname">'+(isUser?'You':'Roadmap AI')+'</div><div class="bub'+(isErr&&!isUser?' err':'')+'">'+html+'</div><div class="mmeta"><span class="mtime">'+time+'</span><div class="macts"><button class="act" title="Copy" onclick="copyBub(this)"><i class="fa-regular fa-copy"></i></button></div></div></div>';
+  msgsEl.appendChild(row);if(animate)scrollBot();
+}
+function showTyping(){removeTyping();const row=document.createElement('div');row.id='trow';row.className='trow';row.innerHTML='<div class="mav" style="background:var(--s800);border:1px solid var(--s600)"><i class="fa-solid fa-route" style="font-size:10px;color:var(--wh)"></i></div><div class="tbub"><div class="td"></div><div class="td"></div><div class="td"></div></div>';msgsEl.appendChild(row);scrollBot();}
+function removeTyping(){document.getElementById('trow')&&document.getElementById('trow').remove();}
+
+async function send(raw){
+  const text=(raw||'').trim();if(!text||S.busy)return;
+  welScrEl.style.display='none';msgsEl.style.display='';
+  if(!S.activeId)newConv(text);
+  const conv=getActive();if(!conv)return;
+  const t=nowStr(),uHtml='<p>'+esc(text)+'</p>';
+  conv.msgs.push({role:'user',html:uHtml,time:t});addBubble('user',uHtml,t,true);
+  miEl.value='';miEl.style.height='auto';bsendEl.disabled=true;S.busy=true;showTyping();
+  try{
+    const res=await fetch('/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text})});
+    if(!res.ok)throw new Error('Server error '+res.status);
+    const data=await res.json();
+    removeTyping();
+    const at=nowStr(),aiHtml=renderMD((data.response||'').trim());
+    conv.msgs.push({role:'ai',html:aiHtml,time:at});addBubble('ai',aiHtml,at,true);
+  }catch(err){
+    removeTyping();
+    const at=nowStr(),errHtml='<p>Cannot connect to Ollama. Make sure ollama serve is running.</p>';
+    conv.msgs.push({role:'ai',html:errHtml,time:at});addBubble('ai',errHtml,at,true);
+    statusDot.className='status-dot err';statusText.textContent='Ollama offline';
+  }
+  bsendEl.disabled=false;S.busy=false;miEl.focus();
+}
+
+function useSug(text){miEl.value=text;autoH();send(text);switchPanel('chat');}
+function copyBub(btn){const b=btn.closest('.mbody').querySelector('.bub');navigator.clipboard.writeText(b.innerText).then(()=>showToast('Copied!'));}
+function copyLast(){const rows=[...msgsEl.querySelectorAll('.mrow.ai')];if(!rows.length){showToast('No AI response yet');return;}navigator.clipboard.writeText(rows[rows.length-1].querySelector('.bub').innerText).then(()=>showToast('Copied!'));}
+function clearChat(){S.activeId=null;msgsEl.innerHTML='';msgsEl.style.display='none';welScrEl.style.display='';renderList();showToast('Chat cleared');}
+
+// File upload
+function handleFile(input){
+  const file=input.files[0];const nameEl=document.getElementById('uploadName');
+  if(file){nameEl.textContent='Selected: '+file.name;nameEl.style.display='block';}
+  else{nameEl.style.display='none';}
+}
+
+// RESUME ANALYZER
+async function analyzeResume(){
+  const fileInput=document.getElementById('resumeFile');
+  const career=document.getElementById('resumeCareer').value;
+  const btn=document.getElementById('resumeBtn');
+  const resultBox=document.getElementById('resumeResult');
+  if(!fileInput.files[0]){showToast('Please upload a PDF resume first');return;}
+  btn.disabled=true;btn.classList.add('loading');resultBox.classList.remove('show');
+  const formData=new FormData();
+  formData.append('resume',fileInput.files[0]);
+  formData.append('career',career);
+  try{
+    const res=await fetch('/analyze-resume',{method:'POST',body:formData});
+    const data=await res.json();
+    if(data.error){showToast('Error: '+data.error);return;}
+    const text=data.response||'';
+    document.getElementById('resumeResultSub').textContent='Analysis for '+career+' role';
+    document.getElementById('resumeResultContent').innerHTML=renderMD(text);
+    showScore('scoreTrack','scoreFill','scoreVal','scoreWrap',text);
+    resultBox.classList.add('show');
+    setTimeout(()=>resultBox.scrollIntoView({behavior:'smooth',block:'start'}),100);
+  }catch(e){showToast('Error: Make sure Ollama is running and try again');}
+  finally{btn.disabled=false;btn.classList.remove('loading');}
+}
+
+// SKILL GAP CHECKER
+async function checkSkillGap(){
+  const career=document.getElementById('sgCareer').value;
+  const skills=document.getElementById('sgSkills').value.trim();
+  const btn=document.getElementById('sgBtn');
+  const resultBox=document.getElementById('sgResult');
+  if(!skills){showToast('Please enter your current skills');return;}
+  btn.disabled=true;btn.classList.add('loading');resultBox.classList.remove('show');
+  try{
+    const res=await fetch('/skill-gap',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({career,current_skills:skills})});
+    const data=await res.json();
+    if(data.error){showToast('Error: '+data.error);return;}
+    const text=data.response||'';
+    document.getElementById('sgResultSub').textContent='Gap analysis for '+career;
+    document.getElementById('sgResultContent').innerHTML=renderMD(text);
+    showScore('sgScoreTrack','sgScoreFill','sgScoreVal','sgScoreWrap',text);
+    resultBox.classList.add('show');
+    setTimeout(()=>resultBox.scrollIntoView({behavior:'smooth',block:'start'}),100);
+  }catch(e){showToast('Error: Make sure Ollama is running and try again');}
+  finally{btn.disabled=false;btn.classList.remove('loading');}
+}
+
+// TIME ESTIMATOR
+function updateHours(val){
+  document.getElementById('teHoursVal').textContent=val;
+  document.getElementById('teHoursDisplay').textContent=val+' hours';
+  updateEstimate();
+}
+function updateEstimate(){
+  const career=document.getElementById('teCareer')&&document.getElementById('teCareer').value||'Software Developer';
+  const hours=parseFloat(document.getElementById('teHours')&&document.getElementById('teHours').value||2);
+  const info=CHOURS[career]||{h:800,s:'4-12L'};
+  const hrsWk=Math.round(hours*7);
+  const months=Math.round((info.h/hrsWk/4.3)*10)/10;
+  document.getElementById('estMonths').textContent=months;
+  document.getElementById('estHrsWk').textContent=hrsWk;
+  document.getElementById('estSalary').textContent=info.s;
+}
+async function estimateTime(){
+  const career=document.getElementById('teCareer').value;
+  const hours=parseFloat(document.getElementById('teHours').value);
+  const skills=document.getElementById('teSkills').value.trim()||'none';
+  const btn=document.getElementById('teBtn');
+  const resultBox=document.getElementById('teResult');
+  btn.disabled=true;btn.classList.add('loading');resultBox.classList.remove('show');
+  try{
+    const res=await fetch('/time-estimate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({career,hours_per_day:hours,current_skills:skills})});
+    const data=await res.json();
+    if(data.error){showToast('Error: '+data.error);return;}
+    const text=data.response||'';
+    document.getElementById('teResultSub').textContent=hours+'h/day plan for '+career+' - Salary: '+(data.salary||'');
+    document.getElementById('teResultContent').innerHTML=renderMD(text);
+    resultBox.classList.add('show');
+    setTimeout(()=>resultBox.scrollIntoView({behavior:'smooth',block:'start'}),100);
+  }catch(e){showToast('Error: Make sure Ollama is running and try again');}
+  finally{btn.disabled=false;btn.classList.remove('loading');}
+}
+
+// Sidebar
+sbBtn.addEventListener('click',()=>{if(window.innerWidth<=768){const o=sbEl.classList.toggle('mo');ovlEl.style.display=o?'block':'none';}else{S.sbHidden=!S.sbHidden;sbEl.classList.toggle('hide',S.sbHidden);}});
+function closeMobile(){sbEl.classList.remove('mo');ovlEl.style.display='none';}
+ovlEl.addEventListener('click',closeMobile);
+btnNew.addEventListener('click',()=>{S.activeId=null;msgsEl.innerHTML='';msgsEl.style.display='none';welScrEl.style.display='';renderList();miEl.focus();switchPanel('chat');if(window.innerWidth<=768)closeMobile();});
+
+// Input
+miEl.addEventListener('input',autoH);
+miEl.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send(miEl.value);}});
+bsendEl.addEventListener('click',()=>send(miEl.value));
+</script>
+</body>
+</html>
